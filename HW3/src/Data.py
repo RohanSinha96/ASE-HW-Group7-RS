@@ -54,7 +54,20 @@ class Data:
             for _, col in cols.items():
                 y_div[col.txt] = col.rnd(col.div(), 2)
             return y_div
-
+    
+    def better(self,row1,row2,s1,s2,ys,x,y):
+        """
+        true if `row1` dominates
+        """
+        s1,s2,ys = 0,0,self.cols.y
+        x = y = None
+        
+        for _,col in ys.items():
+            x  = col.norm(row1.cells[col.at])
+            y  = col.norm(row2.cells[col.at])
+            s1 = s1 - math.exp(col.w * (x-y)/len(ys))
+            s2 = s2 - math.exp(col.w * (y-x)/len(ys))
+        return s1/len(ys) < s2/len(ys)
         # x_mid = {}
         # if what == "mid":
         #     x_mid[cols.txt] = cols.mid()
